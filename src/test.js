@@ -68,7 +68,41 @@ const mockApp = {
             thread_ts: "1709913600.000000"
           }
         ]
+      }),
+      members: async () => ({
+        members: ["U123", "U124", "U125", "U126"]
       })
+    },
+    users: {
+      info: async ({ user }) => {
+        const mockUsers = {
+          U123: {
+            name: "alice",
+            real_name: "Alice Johnson",
+            is_bot: false,
+            deleted: false
+          },
+          U124: {
+            name: "bob",
+            real_name: "Bob Smith",
+            is_bot: false,
+            deleted: false
+          },
+          U125: {
+            name: "charlie",
+            real_name: "Charlie Brown",
+            is_bot: false,
+            deleted: false
+          },
+          U126: {
+            name: "dana",
+            real_name: "Dana White",
+            is_bot: false,
+            deleted: false
+          }
+        };
+        return { user: mockUsers[user] || { is_bot: true, deleted: true } };
+      }
     }
   }
 };

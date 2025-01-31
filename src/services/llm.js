@@ -7,6 +7,53 @@ if (!process.env.OPENROUTER_API_KEY) {
 
 const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
 
+// Cache for channel members
+let channelMembersCache = null;
+let lastCacheUpdate = null;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+async function getChannelMembers(app) {
+  // Return cached data if available and fresh
+  if (channelMembersCache && lastCacheUpdate && (Date.now() - lastCacheUpdate < CACHE_DURATION)) {
+    return channelMembersCache;
+  }
+
+  try {
+    // Get channel members
+    const result = await app.client.conversations.members({
+      channel: process.env.SLACK_CHANNEL_ID
+    });
+
+    // Get user info for each member
+    const memberPromises = result.members.map(async (userId) => {
+      const userInfo = await app.client.users.info({ user: userId });
+      return {
+        id: userId,
+        name: userInfo.user.name,
+        real_name: userInfo.user.real_name,
+        is_bot: userInfo.user.is_bot,
+        is_active: !userInfo.user.deleted
+      };
+    });
+
+    const members = await Promise.all(memberPromises);
+    
+    // Filter out bots and inactive users
+    const activeHumanMembers = members.filter(member => 
+      !member.is_bot && member.is_active
+    );
+
+    // Update cache
+    channelMembersCache = activeHumanMembers;
+    lastCacheUpdate = Date.now();
+
+    return activeHumanMembers;
+  } catch (error) {
+    console.error('Error fetching channel members:', error);
+    return [];
+  }
+}
+
 async function callOpenRouter(messages, systemMessage = null) {
   const requestMessages = systemMessage 
     ? [{ role: "system", content: systemMessage }, ...messages]
@@ -102,7 +149,10 @@ async function getChannelHistory(app, lastDailyUpdate = null) {
 }
 
 export async function generateDailyUpdate(app, lastDailyUpdate) {
-  const channelHistory = await getChannelHistory(app, lastDailyUpdate);
+  const [channelHistory, channelMembers] = await Promise.all([
+    getChannelHistory(app, lastDailyUpdate),
+    getChannelMembers(app)
+  ]);
   
   const messages = [{
     role: "user",
@@ -110,8 +160,10 @@ export async function generateDailyUpdate(app, lastDailyUpdate) {
 
 ${TASK_CONTEXT}
 
-And this Slack conversation history since the last daily update:
+Channel Members (for task delegation):
+${JSON.stringify(channelMembers, null, 2)}
 
+And this Slack conversation history since the last daily update:
 ${JSON.stringify(channelHistory, null, 2)}
 
 Generate a daily update that includes:
@@ -123,21 +175,22 @@ Generate a daily update that includes:
    - Updates on co-budgeting and co-writing efforts
 
 2. Today's Focus:
-   - Assign specific tasks to team members using @mentions
+   - Assign specific tasks to team members using @mentions from the channel members list
+   - Try to distribute tasks evenly among available members
    - Add witty comments about the tasks while keeping them actionable
    - Include priority levels with a touch of humor
    - Make sure each task has a clear owner and deadline
 
 3. Attention Needed:
    - Call out blockers with a hint of "we all saw this coming"
-   - Tag specific people who need to take action
+   - Tag specific people who need to take action (use channel members list)
    - Highlight approaching deadlines with mild urgency
    - Point out any "elephant in the room" issues that need addressing
 
 Format the message in Slack-compatible markdown with emojis.
 Keep the tone professional but with a dash of wit and mild sarcasm.
 If there's limited activity, call it out with a playful nudge.
-Make sure to delegate tasks clearly using @mentions.
+Make sure to delegate tasks clearly using @mentions from the channel members list.
 Reference the task guide principles when relevant, but don't be afraid to point out when we're obviously not following them.`
   }];
 
