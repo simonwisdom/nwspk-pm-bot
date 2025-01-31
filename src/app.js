@@ -60,6 +60,40 @@ const app = new App({
 });
 logger.info('Slack app initialized');
 
+// Verify Slack token and scopes
+async function verifySlackConfig() {
+  try {
+    // Test auth to verify token and scopes
+    const auth = await app.client.auth.test();
+    logger.info('Slack authentication successful', { 
+      botId: auth.bot_id,
+      teamId: auth.team_id 
+    });
+
+    logger.info('Required Slack scopes:', {
+      required: [
+        'app_mentions:read',
+        'channels:history',
+        'channels:read',
+        'chat:write',
+        'users:read',
+        'groups:history',
+        'im:history',
+        'mpim:history',
+        'connections:write'
+      ]
+    });
+    
+    return true;
+  } catch (error) {
+    logger.error('Slack configuration error:', {
+      error: error.message,
+      hint: 'Please verify your Slack app has all required scopes and tokens are correct. Required scopes: app_mentions:read, channels:history, channels:read, chat:write, users:read, groups:history, im:history, mpim:history, connections:write'
+    });
+    return false;
+  }
+}
+
 // Health check endpoint with detailed status
 expressApp.get('/health', (req, res) => {
   logger.debug('Health check requested');
@@ -245,9 +279,15 @@ async function runMigrations() {
     
     // Finally start the Slack app
     logger.info('Starting Slack app...');
-    await app.start();
-    appState.slack = true;
-    logger.info('⚡️ Bolt app is running!');
+    const slackConfigValid = await verifySlackConfig();
+    if (slackConfigValid) {
+      await app.start();
+      appState.slack = true;
+      logger.info('⚡️ Bolt app is running!');
+    } else {
+      logger.warn('Slack app not started due to missing scopes - continuing with limited functionality');
+      appState.slack = false;
+    }
     
     logger.info('Application startup completed', { appState });
   } catch (error) {
