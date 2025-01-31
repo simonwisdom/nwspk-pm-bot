@@ -1,4 +1,7 @@
-import { App } from '@slack/bolt';
+// Fix Slack bolt import for CommonJS compatibility
+import pkg from '@slack/bolt';
+const { App } = pkg;
+
 import express from 'express';
 import cron from 'node-cron';
 import dotenv from 'dotenv';
