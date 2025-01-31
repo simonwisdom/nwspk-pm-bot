@@ -38,6 +38,15 @@ expressApp.get('/health', (req, res) => {
   res.status(200).json({ status: 'healthy' });
 });
 
+// Add a root endpoint for basic info
+expressApp.get('/', (req, res) => {
+  res.status(200).json({ 
+    status: 'running',
+    version: '1.0.0',
+    description: 'Grantmaking Exercise Slack Bot'
+  });
+});
+
 // Schedule daily updates (9:00 AM London time)
 cron.schedule('0 9 * * *', async () => {
   try {
@@ -154,22 +163,23 @@ async function runMigrations() {
 // Start the application
 (async () => {
   try {
-    // First, run migrations
+    // First start the Express server
+    const port = process.env.PORT || 3000;
+    expressApp.listen(port, () => {
+      logger.info(`Server listening on port ${port}`);
+    });
+
+    // Then run migrations
     logger.info('Running database migrations...');
     await runMigrations();
     
-    // Then start the Express server
-    const port = process.env.PORT || 3000;
-    expressApp.listen(port, () => {
-      logger.info(`Health check server listening on port ${port}`);
-    });
-
     // Finally start the Slack app
     await app.start();
     logger.info('⚡️ Bolt app is running!');
     logger.info('📦 Database connected and migrations completed successfully');
   } catch (error) {
     logger.error('Failed to start app:', error);
-    process.exit(1);
+    // Don't exit on error, let the health check endpoint stay available
+    logger.error('Application started with errors, some features may be unavailable');
   }
 })(); 

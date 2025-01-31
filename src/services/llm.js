@@ -1,13 +1,39 @@
-import OpenAI from "openai";
+import dotenv from 'dotenv';
+dotenv.config();
 
-const openai = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.OPENROUTER_API_KEY,
-  defaultHeaders: {
-    "HTTP-Referer": process.env.SITE_URL,
-    "X-Title": "Grantmaking Bot",
+if (!process.env.OPENROUTER_API_KEY) {
+  throw new Error("OPENROUTER_API_KEY is required");
+}
+
+const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
+
+async function callOpenRouter(messages, systemMessage = null) {
+  const requestMessages = systemMessage 
+    ? [{ role: "system", content: systemMessage }, ...messages]
+    : messages;
+
+  const response = await fetch(`${OPENROUTER_BASE_URL}/chat/completions`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      "HTTP-Referer": process.env.SITE_URL || "http://localhost:3000",
+      "X-Title": "Grantmaking Bot",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: "meta-llama/llama-3.3-70b-instruct",
+      messages: requestMessages
+    })
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(`OpenRouter API error: ${error.message || response.statusText}`);
   }
-});
+
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
 
 const TASK_CONTEXT = `This is a grantmaking exercise where a committee must allocate £5,000,000 across 293 political technology projects. Key points:
 
@@ -78,88 +104,72 @@ async function getChannelHistory(app, lastDailyUpdate = null) {
 export async function generateDailyUpdate(app, lastDailyUpdate) {
   const channelHistory = await getChannelHistory(app, lastDailyUpdate);
   
-  const prompt = `You are a professional project manager for a grantmaking committee working on the following task:
+  const messages = [{
+    role: "user",
+    content: `You are a project manager for a grantmaking committee with a mildly sarcastic sense of humor. You're good at your job, but you can't help adding a touch of wit to keep things entertaining. You need to generate a daily update based on this context:
 
 ${TASK_CONTEXT}
 
-Based on the following Slack conversation history since the last daily update:
+And this Slack conversation history since the last daily update:
 
 ${JSON.stringify(channelHistory, null, 2)}
 
 Generate a daily update that includes:
 
 1. Yesterday's Progress:
-   - Key discussions and decisions about project evaluation methods
+   - Key discussions and decisions (with a dash of playful commentary)
    - Progress on data collection and algorithm development
-   - Important insights about specific projects or project categories
+   - Important insights about projects (feel free to be mildly sarcastic about obvious oversights)
    - Updates on co-budgeting and co-writing efforts
 
 2. Today's Focus:
-   - Priority tasks for improving the allocation algorithm
-   - Data collection and research needs
-   - Required committee decisions or discussions
-   - Upcoming pull requests or code reviews
+   - Assign specific tasks to team members using @mentions
+   - Add witty comments about the tasks while keeping them actionable
+   - Include priority levels with a touch of humor
+   - Make sure each task has a clear owner and deadline
 
 3. Attention Needed:
-   - Blocked items requiring committee input
-   - Questions about evaluation criteria or process
-   - Areas where we need more data or research
-   - Upcoming deadlines and milestones
+   - Call out blockers with a hint of "we all saw this coming"
+   - Tag specific people who need to take action
+   - Highlight approaching deadlines with mild urgency
+   - Point out any "elephant in the room" issues that need addressing
 
 Format the message in Slack-compatible markdown with emojis.
-Keep the tone professional but friendly.
-If there's limited activity, acknowledge that and suggest specific ways to move the process forward.
-Reference the task guide principles when relevant to guide the committee's work.`;
+Keep the tone professional but with a dash of wit and mild sarcasm.
+If there's limited activity, call it out with a playful nudge.
+Make sure to delegate tasks clearly using @mentions.
+Reference the task guide principles when relevant, but don't be afraid to point out when we're obviously not following them.`
+  }];
 
-  const completion = await openai.chat.completions.create({
-    model: "meta-llama/llama-3.3-70b-instruct",
-    messages: [
-      {
-        role: "system",
-        content: "You are a professional project manager for a grantmaking committee, responsible for creating clear, motivating daily updates that keep the team focused on their core objectives and methodology."
-      },
-      {
-        role: "user",
-        content: prompt
-      }
-    ]
-  });
+  const systemMessage = "You are a witty project manager for a grantmaking committee. You maintain professionalism while adding just enough sarcasm to keep things entertaining. You're direct about task delegation and aren't afraid to call out issues with a touch of humor.";
 
-  return completion.choices[0].message.content;
+  return await callOpenRouter(messages, systemMessage);
 }
 
 export async function generateThreadResponse(threadHistory) {
-  const prompt = `As a project manager for a grantmaking committee working on the following task:
+  const messages = [{
+    role: "user",
+    content: `As a mildly sarcastic but effective project manager for a grantmaking committee working on this task:
 
 ${TASK_CONTEXT}
 
-Respond to the following conversation thread:
+Respond to this conversation thread with your characteristic wit:
 ${threadHistory.map(msg => `${msg.user}: ${msg.text}`).join('\n')}
 
-Provide a helpful response that:
-1. Addresses questions or concerns raised
-2. Connects the discussion to the core objectives (impact evaluation, co-budgeting, co-writing)
-3. Suggests specific next steps or action items
-4. References relevant parts of the task methodology (data collection, algorithm improvement, etc.)
-5. Maintains focus on project evaluation rather than funding or team capability
+Provide a response that:
+1. Addresses the questions/concerns with a touch of playful commentary
+2. Connects to core objectives while pointing out any obvious oversights
+3. Delegates specific tasks to people using @mentions
+4. Suggests next steps with clear owners and deadlines
+5. Maintains focus on project evaluation (while possibly noting when we're getting off track)
 
-Keep the tone professional but friendly.
-Use Slack-compatible markdown and appropriate emojis.
-Ground your response in the task guide principles when relevant.`;
+Keep the tone professional but witty.
+Use Slack-compatible markdown and emojis creatively.
+Ground your response in the task guide principles, but feel free to point out when we're clearly ignoring them.
+Make sure to assign clear action items to specific people.`
+  }];
 
-  const completion = await openai.chat.completions.create({
-    model: "meta-llama/llama-3.3-70b-instruct",
-    messages: [
-      {
-        role: "system",
-        content: "You are a helpful project manager for a grantmaking committee, guiding them through a complex process of evaluating and allocating funds to political technology projects using data-driven methods."
-      },
-      {
-        role: "user",
-        content: prompt
-      }
-    ]
-  });
+  const systemMessage = "You are a witty project manager who keeps the team on track with a mix of clear direction and mild sarcasm. You're good at delegating tasks and aren't afraid to point out issues with a touch of humor.";
 
-  return completion.choices[0].message.content;
+  return await callOpenRouter(messages, systemMessage);
 } 
