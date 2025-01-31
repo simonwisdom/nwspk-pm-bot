@@ -1,0 +1,377 @@
+﻿Newspeak House
+Political Technology Awards 2025
+In this exercise, the 2024 cohort will act as a grantmaking committee, with a (fictional) budget of £5,000,000 to allocate across a portfolio of 293 projects in the field of political technology.
+
+
+This exercise is about three things:
+
+
+* designing and organising group processes for three complex political activities: impact evaluation, co-budgeting, and co-writing
+* developing an overview of the landscape of political technology projects, institutions and research
+* reflecting on your own values and priorities as they relate to political technology
+
+
+The committee must allocate the entire budget of £5,000,000. You may want to allocate everything to one project, or spread your funding across many projects. You may fund different projects at different levels. Note that the emphasis of this exercise is not to evaluate how much money the projects might need; you should just focus on deciding which projects are most important. That is, in this exercise, the money is a proxy for how important the committee believes each project is. In particular:
+
+
+* Don’t consider how much money the project needs, or if it already has enough, or would find it easy to raise additional money
+* Don’t consider whether the current people or institution producing the project are capable, competent, or well-positioned
+* Instead, focus on the design, goals, and theory of change of the project
+
+
+Deliverables
+By midnight on 4th April 2025 on 2024.newspeak.house the committee will publish:
+
+
+* an allocation of the £5,000,000 across the project portfolio
+* a joint statement of at least 3000 words explaining your process and justifying your allocation
+
+
+
+
+At 10:00 on the 5th April 2025, a spokesperson[a] from the committee will make a one hour presentation on this project to the fellowship, faculty, and trustees.
+
+
+
+
+By midnight on 11th April 2025, committee members will each publish a written reflection on 2024.newspeak.house. This should cover:
+
+
+* How did the committee develop its processes for this task? What worked well, and what worked poorly? What would you do differently next time?
+* How has your perspective changed on impact evaluation, co-budgeting, and co-writing?
+* Which individual projects stood out to you, and why?
+* Anything else you think is important
+
+
+Guidance
+This is a complex and substantial task, and there are many possible approaches for how to tackle each part of it, all of which will have benefits and drawbacks. It will be essential for you to consider how you can best leverage the time, skills and judgement of your committee to complete it successfully. At the same time, you will likely discover that the committee has quite fundamental disagreements! It’s critical that you should not think of this as a group exercise: it is an individual exercise with the group as its subject, and you have many tools at your disposal to influence its trajectory. The exercise is also just as much about the processes you devise to complete the task as your solution. You should recognise it as an opportunity to apply the theory that you have been learning in your other modules.
+
+
+You will not succeed by looking through the projects one by one. This is an opportunity to explore computational and data-driven approaches. Furthermore, committee members will not be able to form accurate evaluations of projects by looking at their webpages for five minutes and using their intuition. The purpose and significance of many projects may not be obvious. For example, some projects may be mature and widely used, whereas others may be only prototypes, but that doesn’t mean one is necessarily more important than the other. Research will be required; the committee may elicit insights from community members and faculty, consult the library, use external research and data sources, aggregate public sentiment, etc, to help make their decisions. You may also contact the people working on the projects themselves! However please respect their time, and to avoid confusion we recommend that you don’t tell them about this exercise - just say that you’re a researcher from The London College of Political Technology, and that you’d like to learn more about their work.
+Projects
+1. http://hatemeter.eu
+2. https://12ft.io/
+3. https://adhocracy.plus
+4. https://aisafety.info
+5. https://alaveteli.org
+6. https://aleph.occrp.org
+7. https://algorithmwatch.org
+8. https://all-our-ideas.citizens.is
+9. https://annas-archive.org
+10. https://antievictionmappingproject.github.io/landlordtech
+11. https://aragon.org
+12. https://arxiv.org
+13. https://arxiv.org/abs/2005.13701
+14. https://atlasofsurveillance.org
+15. https://bellingcat.gitbook.io/toolkit
+16. https://benefits-calculator.turn2us.org.uk
+17. https://birdflurisk.com
+18. https://certbot.eff.org
+19. https://charitybase.uk
+20. https://charitydigitalskills.co.uk
+21. https://cheeri.app
+22. https://choosealicense.com
+23. https://ciudadaniai.org
+24. https://civicbudget.org
+25. https://civiclick.com
+26. https://civicrm.org
+27. https://civictech.guide
+28. https://ckan.org
+29. https://climateaction.tech
+30. https://cm.cip.org
+31. https://cobudget.com
+32. https://collab.land
+33. https://collaborative-data.theodi.org
+34. https://collectivetech.io
+35. https://common.io
+36. https://commonslibrary.org
+37. https://communities.sunlightfoundation.com/methodology
+38. https://communityrule.info
+39. https://conservativepartyfunding.co.uk
+40. https://constituencies.squiffy.io
+41. https://constituteproject.org
+42. https://consulproject.org
+43. https://contractsfordatacollaboration.org
+44. https://coops.tech
+45. https://copbot.online
+46. https://coralproject.net
+47. https://cortico.ai/platform
+48. https://councilclimatescorecards.uk
+49. https://creativecommons.org
+50. https://cybersecurityfordemocracy.org
+51. https://data.humdata.org
+52. https://data.mysociety.org
+53. https://datatrusts.uk
+54. https://decelerator.org.uk
+55. https://decentralized-id.com
+56. https://decidim.org
+57. https://developer.parliament.uk
+58. https://developers.democracyclub.org.uk/api/v1
+59. https://digitalcharitylab.org/product/digital-account-management-toolkit
+60. https://docs.holepunch.to
+61. https://docs.plus
+62. https://dogooder.co
+63. https://dovetail.network
+64. https://dunadyne.org
+65. https://en.wikipedia.org/wiki/Template:Calculator
+66. https://en.wikipedia.org/wiki/Wikipedia:In_the_news
+67. https://entitledto.co.uk
+68. https://esper.com/product
+69. https://ethelo.com
+70. https://fairbnb.coop
+71. https://farmerchat.digitalgreen.org
+72. https://fatebook.io
+73. https://filmot.com
+74. https://fixmyblock.org
+75. https://fullfact.org/ai
+76. https://gender-pay-gap.service.gov.uk
+77. https://getodk.org
+78. https://github.com/bellingcat/EDGAR
+79. https://github.com/bluesky-social
+80. https://github.com/compdemocracy/polis
+81. https://github.com/cverluise/PatCit
+82. https://github.com/datakind/Data-Observation-Toolkit
+83. https://github.com/deepseek-ai/DeepSeek-V3
+84. https://github.com/DISARMFoundation/DISARMframeworks
+85. https://github.com/fission-codes/fission-codes
+86. https://github.com/g0v/vue.vtaiwan.tw
+87. https://github.com/geeksforsocialchange/PlaceCal
+88. https://github.com/harmonicabot
+89. https://github.com/huridocs
+90. https://github.com/i-dot-ai/awesome-gov-datasets
+91. https://github.com/ideal-postcodes/postcodes.io
+92. https://github.com/kazad/pastecal
+93. https://github.com/mastodon/mastodon
+94. https://github.com/notchia/dao-governance-surfaces
+95. https://github.com/openpolitics/groupthink
+96. https://github.com/podemos-info/participa
+97. https://github.com/PopulateTools
+98. https://github.com/propublica/django-collaborative
+99. https://github.com/RadicalxChange/rxc-voice
+100. https://github.com/rahvaalgatus/rahvaalgatus
+101. https://github.com/ribenamaplesyrup/sugartrail
+102. https://github.com/SentinelTeam/grim
+103. https://github.com/sinar/popit_ng
+104. https://github.com/StanfordCDT/pb
+105. https://github.com/thicknavyrain/uk_elections_leaflets
+106. https://github.com/travisbrown/birdwatch
+107. https://github.com/tulir/mautrix-whatsapp
+108. https://github.com/ushahidi/platform-comrades
+109. https://github.com/vbuterin/DAO
+110. https://github.com/WhoTargetsMe/ad-transparency-standards/blob/main/implement.md
+111. https://github.com/ytdl-org/youtube-dl
+112. https://gordonguthrie.github.io/frankensteinbill
+113. https://gov.uk/find-local-consultations
+114. https://gov.uk/government/publications/directory-of-uk-safety-tech-providers
+115. https://granicus.com/uk
+116. https://granitt.io
+117. https://grantnav.threesixtygiving.org
+118. https://guardianproject.info
+119. https://hact.org.uk/tools-and-services/uk-housing-data-standards
+120. https://hand-written-petition-scanner.streamlit.app
+121. https://humbledata.org
+122. https://idealist.org
+123. https://instantill.org
+124. https://joss.theoj.org
+125. https://journaliststudio.google.com
+126. https://kialo.com
+127. https://kumu.io
+128. https://labourxchange.uk
+129. https://landexplorer.coop
+130. https://liberopinion.com
+131. https://library.theengineroom.org
+132. https://liquidfeedback.com
+133. https://littlesis.org
+134. https://localinsight.org
+135. https://manifold.markets
+136. https://mapit.mysociety.org
+137. https://mapped.commonknowledge.coop
+138. https://mapping.kids
+139. https://matrix.org
+140. https://medium.com/@abscond/membership-a-prototype-ea822b2683b
+141. https://medium.com/metagov/introducing-the-agreement-engine-bf03b6d5c16c
+142. https://membershippuzzle.org
+143. https://membersinterests.org.uk
+144. https://meta.wikimedia.org/wiki/Abstract_Wikipedia
+145. https://metaculus.com
+146. https://missingnumbers.org
+147. https://moralmachine.net
+148. https://murmurations.network
+149. https://nationbetter.uk
+150. https://navigator.oii.ox.ac.uk
+151. https://nestr.io
+152. https://nookcrm.com
+153. https://numfocus.org
+154. https://nyaaya.org
+155. https://nymtech.net
+156. https://oa.report
+157. https://openaccess.transparency.org.uk
+158. https://openaccessbutton.org
+159. https://openaudience.org
+160. https://openbudgets.eu
+161. https://opencollective.com
+162. https://opencouncildata.co.uk
+163. https://opendatacommunities.org
+164. https://openheartmind.org
+165. https://openletter.earth
+166. https://openprocurement.io
+167. https://openreferraluk.org
+168. https://opensupplyhub.org
+169. https://orcaready.org
+170. https://orcid.org
+171. https://osf.io
+172. https://osintframework.com
+173. https://overton.io
+174. https://pageviews.wmcloud.org
+175. https://parsethebill.com
+176. https://parti.xyz
+177. https://participedia.net
+178. https://planit.org.uk
+179. https://plausible.io
+180. https://plunkett.my.site.com/keepitinthecommunity/s
+181. https://urbit.org
+182. https://policyengine.org/uk
+183. https://policykit.org
+184. https://policymogul.com
+185. https://postbug.com
+186. https://privacybadger.org
+187. https://public.tableau.com/app/profile/citizensadvice/vizzes
+188. https://publicaccountability.org
+189. https://publicmediastack.com
+190. https://pursuanceproject.org
+191. https://quadraticvote.radicalxchange.org
+192. https://radicle.xyz
+193. https://remembertovote.org.uk
+194. https://research.localgov.digital
+195. https://richardpope.org/blog/2017/03/05/beckton-a-tool-to-build-groups-of-paying-members
+196. https://right-to-know.org
+197. https://riseup.net
+198. https://riversentiment.app
+199. https://sci-hub.se
+200. https://secfirst.org
+201. https://securedrop.org
+202. https://see3.xyz
+203. https://semanticclimate.github.io
+204. https://shareyourpaper.org
+205. https://site.urbanistai.com
+206. https://snowdrift.coop
+207. https://sobre.ejparticipe.org
+208. https://sourceafrica.net
+209. https://soweego.readthedocs.io
+210. https://spacetu.be
+211. https://spartacus.app
+212. https://standards.theodi.org
+213. https://strikemap.org
+214. https://talktothecity.org
+215. https://tech-coops.xyz
+216. https://thecircuit.cc
+217. https://thegovernmentsays.com
+218. https://theodi.org/insights/reports/registers-and-collaboration-making-lists-we-can-trust-report
+219. https://timecounts.org
+220. https://tiscreport.org
+221. https://trends.whotargets.me
+222. https://troubling-ai.glitch.me
+223. https://turbophonebank.com
+224. https://turkopticon.ucsd.edu
+225. https://ukraine.ua/invest-trade/digitalization
+226. https://upgrader.gapminder.org
+227. https://vframe.io
+228. https://violationtrackeruk.goodjobsfirst.org
+229. https://voteforpolicies.org.uk
+230. https://votespeaker.wyza.uk
+231. https://web.archive.org
+232. https://whoisology.com
+233. https://whopostedwhat.com
+234. https://www.agenciesforgood.org
+235. https://www.bemyeyes.com
+236. https://www.changelab.io/democracy
+237. https://www.communitytech.network
+238. https://www.crowdjustice.com
+239. https://www.crowdwrite.xyz
+240. https://www.csail.mit.edu/research/wikum-bridging-discussion-systems-and-wikis-collective-summarization
+241. https://www.discourse.org
+242. https://www.donotpay.com
+243. https://www.dsc.org.uk/publication/the-guide-to-major-trusts-2025-26/
+244. https://www.fixmystreet.com
+245. https://www.forms.service.gov.uk
+246. https://www.givefood.org.uk
+247. https://www.globaleaks.org
+248. https://www.gov.uk/service-manual
+249. https://www.govocal.com
+250. https://www.govtrack.us
+251. https://www.hotosm.org
+252. https://www.localintelligencehub.com
+253. https://www.loomio.org
+254. https://www.marksoutoftenancy.com
+255. https://www.martus.org
+256. https://www.mastodonc.com
+257. https://www.meet.coop
+258. https://www.mptwitterbios.co.uk
+259. https://www.mpwatch.org
+260. https://www.myaction.center
+261. https://www.mysociety.org/climate/neighbourhood-warmth
+262. https://www.notifications.service.gov.uk
+263. https://www.open-contracting.org
+264. https://www.opencrvs.org
+265. https://www.openorigins.com
+266. https://www.openownership.org
+267. https://www.opensanctions.org
+268. https://www.oporaua.org
+269. https://www.organise.org.uk
+270. https://www.otree.org
+271. https://www.papertree.earth
+272. https://www.parallelparliament.co.uk
+273. https://www.payments.service.gov.uk
+274. https://www.plinth.org.uk
+275. https://www.polimonitor.com
+276. https://www.polimorphic.com
+277. https://www.prolific.com
+278. https://www.publiceditor.io
+279. https://www.rightsdd.com
+280. https://www.shareddigitalguides.org.uk
+281. https://www.sign-in.service.gov.uk
+282. https://www.teachingpublicservice.digital
+283. https://www.theyworkforyou.com
+284. https://www.torproject.org
+285. https://www.ushahidi.com 
+286. https://www.watchduty.org
+287. https://www.welivedit.ai
+288. https://www.whatdotheyknow.com
+289. https://www.whatgov.co.uk
+290. https://www.wikidata.org
+291. https://www.workerinfoexchange.org
+292. https://www.writetothem.com
+293. https://yrpri.org
+
+
+Notes
+  
+
+
+
+You will collect data, apply an algorithm to it, and end up with an allocation. Any process you make can be described in this form.
+
+
+You should try and get this pipeline set up as soon as possible, so that you have continuous deployment.
+
+
+It’s important to realise that you won’t be able to get all of the data that you want - it’s better to start by exploring the data you can get easily, rather than spending time thinking about what you wish you had.
+
+
+Your algorithm must be able to take into account the fact that you will have partial data, i.e., you will be able to get some types of data for some of the projects and not others.
+
+
+The opinions of committee members is just one kind of data that you can collect.
+
+
+You should start with an MVP algorithm, which is “we don’t know anything about the projects, and so we allocate the money equally amongst them”.
+
+
+Pull requests can be made to this algorithm, and then the committee can vote on whether they should be merged.
+
+
+As long as each pull request makes the algorithm better, then you will get closer to the optimal allocation.
+
+
+The commit messages for the changes to the algorithm will be the basis for your justification.
+[a]Can be multiple

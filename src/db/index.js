@@ -24,25 +24,25 @@ const config = {
 // Create the database instance
 export const db = pgp(config);
 
-// Export query helper functions
-export const queries = {
-  async getGrantReviews(date) {
-    return db.any('SELECT * FROM grant_reviews WHERE DATE(created_at) = $1', [date]);
+// Export daily update helper functions
+export const dailyUpdates = {
+  async getLatest() {
+    return db.oneOrNone(
+      'SELECT message_ts FROM daily_updates ORDER BY timestamp DESC LIMIT 1'
+    );
   },
   
-  async getNewApplications(date) {
-    return db.any('SELECT * FROM grant_applications WHERE DATE(created_at) = $1', [date]);
+  async create(messageTs) {
+    return db.none(
+      'INSERT INTO daily_updates (timestamp, message_ts) VALUES (NOW(), $1)',
+      [messageTs]
+    );
   },
   
-  async getBlockedReviews() {
-    return db.any('SELECT * FROM grant_reviews WHERE status = $1', ['blocked']);
-  },
-  
-  async getPendingTasks() {
-    return db.any('SELECT * FROM tasks WHERE status = $1 ORDER BY priority DESC', ['pending']);
-  },
-  
-  async getUserAssignments(userId) {
-    return db.any('SELECT * FROM assignments WHERE user_id = $1 AND status = $2', [userId, 'active']);
+  async isDaily(messageTs) {
+    return db.oneOrNone(
+      'SELECT * FROM daily_updates WHERE message_ts = $1',
+      [messageTs]
+    );
   }
 }; 

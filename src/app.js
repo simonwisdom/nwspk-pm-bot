@@ -3,8 +3,8 @@ import express from 'express';
 import cron from 'node-cron';
 import dotenv from 'dotenv';
 import winston from 'winston';
-import { db } from './db/index.js';
-import { formatDailyUpdate } from './utils/messageFormatter.js';
+import { db, dailyUpdates } from './db/index.js';
+import { generateDailyUpdate, generateThreadResponse } from './services/llm.js';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -41,17 +41,57 @@ expressApp.get('/health', (req, res) => {
 // Schedule daily updates (9:00 AM London time)
 cron.schedule('0 9 * * *', async () => {
   try {
-    const update = await formatDailyUpdate();
-    await app.client.chat.postMessage({
+    const lastDaily = await dailyUpdates.getLatest();
+    const messageContent = await generateDailyUpdate(app, lastDaily?.message_ts);
+    const result = await app.client.chat.postMessage({
       channel: process.env.SLACK_CHANNEL_ID,
-      text: update,
-      blocks: update.blocks,
+      text: messageContent,
+      unfurl_links: false,
+      unfurl_media: false
     });
+
+    // Store the timestamp for tracking thread responses
+    await dailyUpdates.create(result.ts);
   } catch (error) {
     logger.error('Failed to send daily update:', error);
   }
 }, {
   timezone: "Europe/London"
+});
+
+// Listen for messages in threads
+app.message(async ({ message, say }) => {
+  try {
+    // Only respond to messages in threads
+    if (message.thread_ts) {
+      // Check if this is a thread of a daily update
+      const isDailyUpdate = await dailyUpdates.isDaily(message.thread_ts);
+
+      if (isDailyUpdate) {
+        // Get thread history
+        const history = await app.client.conversations.replies({
+          channel: message.channel,
+          ts: message.thread_ts,
+          limit: 10 // Get last 10 messages in thread
+        });
+
+        // Format thread history for LLM
+        const threadHistory = history.messages.map(msg => ({
+          user: msg.user,
+          text: msg.text
+        }));
+
+        // Generate and send response
+        const response = await generateThreadResponse(threadHistory);
+        await say({
+          text: response,
+          thread_ts: message.thread_ts
+        });
+      }
+    }
+  } catch (error) {
+    logger.error('Failed to process thread message:', error);
+  }
 });
 
 // Function to run migrations
