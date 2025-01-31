@@ -46,26 +46,24 @@ Add the following environment variables in Railway:
 1. Railway will automatically deploy your application
 2. Monitor the deployment logs for any issues
 3. Once deployed, the health check endpoint will be available at `/health`
+4. Database migrations will run automatically on application startup
 
-## Step 6: Database Migration
-1. In Railway's dashboard, go to "Settings" → "Shell"
-2. Run the migration command:
-   ```bash
-   npm run migrate
-   ```
-
-## Step 7: Verify Deployment
-1. Check the application logs in Railway
-2. Verify the health check endpoint is responding
-3. Wait for the next scheduled message (9:00 AM London time) or test manually
+## Step 6: Verify Deployment
+1. Check the application logs in Railway to verify:
+   - Successful database migrations
+   - Health check endpoint responding
+   - Slack bot connection established
+2. Wait for the next scheduled message (9:00 AM London time) or test manually
 
 ## Troubleshooting
 - If the bot isn't posting messages, check the Slack token permissions
 - For database issues, check the connection string and migration logs
 - Monitor Railway's built-in logging for any application errors
+- If migrations fail, check the application logs for detailed error messages
 
 ## Maintenance
 - Railway will automatically deploy new changes pushed to the main branch
 - Monitor the application's health check endpoint
 - Review logs periodically for any issues
-- Keep dependencies updated using `npm audit` and `npm update` 
+- Keep dependencies updated using `npm audit` and `npm update`
+- New migrations will be automatically applied on application restart 

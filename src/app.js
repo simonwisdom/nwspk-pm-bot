@@ -5,6 +5,9 @@ import dotenv from 'dotenv';
 import winston from 'winston';
 import { db } from './db/index.js';
 import { formatDailyUpdate } from './utils/messageFormatter.js';
+import { promises as fs } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
@@ -51,21 +54,80 @@ cron.schedule('0 9 * * *', async () => {
   timezone: "Europe/London"
 });
 
-// Start the Express server
-const port = process.env.PORT || 3000;
-expressApp.listen(port, () => {
-  logger.info(`Health check server listening on port ${port}`);
-});
+// Function to run migrations
+async function runMigrations() {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const migrationsPath = path.join(__dirname, 'db', 'migrations');
 
-// Start the Slack app
+  try {
+    // Create migrations table if it doesn't exist
+    await db.none(`
+      CREATE TABLE IF NOT EXISTS migrations (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        executed_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    // Get all SQL files in the migrations directory
+    const files = await fs.readdir(migrationsPath);
+    const sqlFiles = files
+      .filter(f => f.endsWith('.sql'))
+      .sort();
+
+    // Run each migration
+    for (const file of sqlFiles) {
+      const migrationExists = await db.oneOrNone(
+        'SELECT id FROM migrations WHERE name = $1',
+        file
+      );
+
+      if (!migrationExists) {
+        logger.info(`Running migration: ${file}`);
+        const sql = await fs.readFile(
+          path.join(migrationsPath, file),
+          'utf8'
+        );
+
+        await db.tx(async t => {
+          await t.none(sql);
+          await t.none(
+            'INSERT INTO migrations(name) VALUES($1)',
+            file
+          );
+        });
+
+        logger.info(`Completed migration: ${file}`);
+      } else {
+        logger.info(`Skipping migration: ${file} (already executed)`);
+      }
+    }
+
+    logger.info('All migrations completed successfully');
+  } catch (error) {
+    logger.error('Migration failed:', error);
+    throw error; // Re-throw to be caught by the startup process
+  }
+}
+
+// Start the application
 (async () => {
   try {
+    // First, run migrations
+    logger.info('Running database migrations...');
+    await runMigrations();
+    
+    // Then start the Express server
+    const port = process.env.PORT || 3000;
+    expressApp.listen(port, () => {
+      logger.info(`Health check server listening on port ${port}`);
+    });
+
+    // Finally start the Slack app
     await app.start();
     logger.info('⚡️ Bolt app is running!');
-    
-    // Test database connection
-    await db.connect();
-    logger.info('📦 Database connected successfully');
+    logger.info('📦 Database connected and migrations completed successfully');
   } catch (error) {
     logger.error('Failed to start app:', error);
     process.exit(1);
