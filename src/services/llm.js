@@ -166,63 +166,93 @@ ${JSON.stringify(channelMembers, null, 2)}
 And this Slack conversation history since the last daily update:
 ${JSON.stringify(channelHistory, null, 2)}
 
-Generate a daily update that includes:
+Generate a daily update using Slack's native formatting:
 
-1. Yesterday's Progress:
-   - Key discussions and decisions (with a dash of playful commentary)
-   - Progress on data collection and algorithm development
-   - Important insights about projects (feel free to be mildly sarcastic about obvious oversights)
-   - Updates on co-budgeting and co-writing efforts
+1. Use *bold* with asterisks
+2. Use _italic_ with underscores
+3. Tag users with their exact ID like <@U123456789>
+4. Create bullet points with •
+5. Use > for quotes or emphasis
+6. Use \`code\` for technical terms
+7. Use emojis directly
 
-2. Today's Focus:
-   - Assign specific tasks to team members using @mentions from the channel members list
-   - Try to distribute tasks evenly among available members
-   - Add witty comments about the tasks while keeping them actionable
-   - Include priority levels with a touch of humor
-   - Make sure each task has a clear owner and deadline
+Structure the update as:
 
-3. Attention Needed:
-   - Call out blockers with a hint of "we all saw this coming"
-   - Tag specific people who need to take action (use channel members list)
-   - Highlight approaching deadlines with mild urgency
-   - Point out any "elephant in the room" issues that need addressing
+*### Daily Update: Because We Need to Stay on Track* :coffee:
 
-Format the message in Slack-compatible markdown with emojis.
+*#### Yesterday's Progress:*
+• Key discussions and decisions (with a dash of playful commentary)
+• Progress on data collection and algorithm development
+• Important insights about projects (feel free to be mildly sarcastic about obvious oversights)
+• Updates on co-budgeting and co-writing efforts
+
+*#### Today's Focus:*
+• Assign specific tasks using proper Slack user IDs from the member list (e.g., <@U123456789>)
+• Try to distribute tasks evenly among available members
+• Add witty comments about the tasks while keeping them actionable
+• Include priority levels with a touch of humor
+• Make sure each task has a clear owner and deadline
+
+*#### Attention Needed:*
+• Call out blockers with a hint of "we all saw this coming"
+• Tag specific people using their Slack user IDs
+• Highlight approaching deadlines with mild urgency
+• Point out any "elephant in the room" issues that need addressing
+
 Keep the tone professional but with a dash of wit and mild sarcasm.
 If there's limited activity, call it out with a playful nudge.
-Make sure to delegate tasks clearly using @mentions from the channel members list.
+Make sure to use the exact Slack user IDs from the channel members list for tagging.
 Reference the task guide principles when relevant, but don't be afraid to point out when we're obviously not following them.`
   }];
 
-  const systemMessage = "You are a witty project manager for a grantmaking committee. You maintain professionalism while adding just enough sarcasm to keep things entertaining. You're direct about task delegation and aren't afraid to call out issues with a touch of humor.";
+  const systemMessage = "You are a witty project manager for a grantmaking committee. You maintain professionalism while adding just enough sarcasm to keep things entertaining. You're direct about task delegation and aren't afraid to call out issues with a touch of humor. Use Slack's native formatting and proper user tagging.";
 
   return await callOpenRouter(messages, systemMessage);
 }
 
 export async function generateThreadResponse(threadHistory) {
+  // Separate the original message from the replies
+  const originalMessage = threadHistory[0];
+  const replies = threadHistory.slice(1);
+  
   const messages = [{
     role: "user",
     content: `As a mildly sarcastic but effective project manager for a grantmaking committee working on this task:
 
 ${TASK_CONTEXT}
 
-Respond to this conversation thread with your characteristic wit:
-${threadHistory.map(msg => `${msg.user}: ${msg.text}`).join('\n')}
+The original daily update was:
+<@${originalMessage.user}>: ${originalMessage.text}
 
-Provide a response that:
-1. Addresses the questions/concerns with a touch of playful commentary
-2. Connects to core objectives while pointing out any obvious oversights
-3. Delegates specific tasks to people using @mentions
-4. Suggests next steps with clear owners and deadlines
-5. Maintains focus on project evaluation (while possibly noting when we're getting off track)
+The conversation thread so far:
+${replies.map(msg => `<@${msg.user}>: ${msg.text}`).join('\n')}
+
+Provide a response using Slack's native formatting:
+1. Use *bold* with asterisks
+2. Use _italic_ with underscores
+3. Tag users with their exact ID like <@U123456789>
+4. Create bullet points with •
+5. Use > for quotes or emphasis
+6. Use \`code\` for technical terms
+7. Use emojis directly
+
+Your response should:
+• Address the questions/concerns raised in the thread
+• Reference relevant parts of the original daily update
+• Connect the discussion to our core objectives
+• Delegate specific tasks using proper Slack user IDs
+• Suggest next steps with clear owners and deadlines
+• Keep the conversation focused on project evaluation
+• Point out if we're getting off track (with a touch of humor)
 
 Keep the tone professional but witty.
-Use Slack-compatible markdown and emojis creatively.
-Ground your response in the task guide principles, but feel free to point out when we're clearly ignoring them.
-Make sure to assign clear action items to specific people.`
+Use Slack's native formatting consistently.
+Ground your response in the task guide principles.
+Make sure to use the exact Slack user IDs for tagging people.
+Feel free to reference earlier messages in the thread when relevant.`
   }];
 
-  const systemMessage = "You are a witty project manager who keeps the team on track with a mix of clear direction and mild sarcasm. You're good at delegating tasks and aren't afraid to point out issues with a touch of humor.";
+  const systemMessage = "You are a witty project manager who keeps the team on track with a mix of clear direction and mild sarcasm. You're good at delegating tasks and aren't afraid to point out issues with a touch of humor. Use Slack's native formatting and proper user tagging. Consider both the original message and the full thread context when responding.";
 
   return await callOpenRouter(messages, systemMessage);
 } 

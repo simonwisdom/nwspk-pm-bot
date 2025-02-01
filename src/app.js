@@ -161,18 +161,37 @@ app.message(async ({ message, say }) => {
 
       if (isDailyUpdate) {
         logger.info('Processing thread response', { threadTs: message.thread_ts });
+        
+        // Get the original daily update message and full thread history
         const history = await app.client.conversations.replies({
           channel: message.channel,
           ts: message.thread_ts,
-          limit: 10
+          limit: 100 // Increased limit to get more context
         });
         logger.debug('Retrieved thread history', { messageCount: history.messages.length });
 
-        const threadHistory = history.messages.map(msg => ({
+        // Ensure messages are in chronological order
+        const sortedMessages = history.messages.sort((a, b) => parseFloat(a.ts) - parseFloat(b.ts));
+        
+        // Get user info for each message author
+        const userInfoPromises = [...new Set(sortedMessages.map(msg => msg.user))].map(userId =>
+          app.client.users.info({ user: userId })
+        );
+        const userInfos = await Promise.all(userInfoPromises);
+        const userMap = Object.fromEntries(
+          userInfos.map(info => [info.user.id, info.user])
+        );
+
+        // Format thread history with user info
+        const threadHistory = sortedMessages.map(msg => ({
           user: msg.user,
-          text: msg.text
+          username: userMap[msg.user]?.name || 'unknown',
+          text: msg.text,
+          ts: msg.ts,
+          is_bot: userMap[msg.user]?.is_bot || false
         }));
 
+        // Generate and send response
         const response = await generateThreadResponse(threadHistory);
         logger.debug('Generated thread response', { responseLength: response.length });
         
