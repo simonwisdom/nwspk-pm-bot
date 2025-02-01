@@ -208,9 +208,9 @@ ${replies.map(msg => `<@${msg.user}>: ${msg.text}`).join('\n')}
 
 Provide a brief, focused response (2-3 sentences max) that either:
 • Answers questions directly
-• Delegates specific tasks
-• Gets the conversation back on track
-• Resolves the discussion
+• Proposes helpful, actionable suggestions
+• Introduces new ideas, frameworks, or points to relevant literature (with citations) if relevant
+• Quotes relevant parts of the original update or previous messages
 • Has a slight sarcastic tone
 
 Use Slack formatting (*bold*, _italic_, <@user>, etc) and emojis where appropriate.`
