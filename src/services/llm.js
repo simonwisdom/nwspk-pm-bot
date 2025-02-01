@@ -1,4 +1,6 @@
 import dotenv from 'dotenv';
+import fs from 'fs/promises';
+import path from 'path';
 dotenv.config();
 
 if (!process.env.OPENROUTER_API_KEY) {
@@ -148,6 +150,33 @@ async function getChannelHistory(app, lastDailyUpdate = null) {
   }
 }
 
+async function loadReferenceDoc(filename) {
+  try {
+    const filePath = path.join(process.cwd(), 'reference_docs', filename);
+    return await fs.readFile(filePath, 'utf8');
+  } catch (error) {
+    console.error(`Error loading reference doc ${filename}:`, error);
+    return null;
+  }
+}
+
+async function loadAllReferenceDocs() {
+  try {
+    const docsDir = path.join(process.cwd(), 'reference_docs');
+    const files = await fs.readdir(docsDir);
+    const docs = await Promise.all(
+      files.map(async file => {
+        const content = await loadReferenceDoc(file);
+        return { name: file, content };
+      })
+    );
+    return docs.filter(doc => doc.content !== null);
+  } catch (error) {
+    console.error('Error loading reference docs:', error);
+    return [];
+  }
+}
+
 export async function generateDailyUpdate(app, lastDailyUpdate) {
   const [channelHistory, channelMembers] = await Promise.all([
     getChannelHistory(app, lastDailyUpdate),
@@ -191,6 +220,7 @@ export async function generateDailyUpdate(app, lastDailyUpdate) {
 }
 
 export async function generateThreadResponse(threadHistory) {
+  const referenceDocs = await loadAllReferenceDocs();
   const originalMessage = threadHistory[0];
   const replies = threadHistory.slice(1);
   
@@ -200,23 +230,26 @@ export async function generateThreadResponse(threadHistory) {
 
 Context: ${TASK_CONTEXT}
 
-Original update:
+Reference Documents:
+${referenceDocs.map(doc => `${doc.name}:\n${doc.content}\n`).join('\n')}
+
+Original message:
 <@${originalMessage.user}>: ${originalMessage.text}
 
 Thread:
 ${replies.map(msg => `<@${msg.user}>: ${msg.text}`).join('\n')}
 
-Provide a brief, focused response (2-3 sentences max) that either:
+Search through the reference documents to find relevant information. Provide a brief, focused response (2-3 sentences max) that:
 • Answers questions directly
 • Proposes helpful, actionable suggestions
 • Introduces new ideas, frameworks, or points to relevant literature (with citations) if relevant
 • Quotes relevant parts of the original update or previous messages
 • Has a slight sarcastic tone
 
-Use Slack formatting (*bold*, _italic_, <@user>, etc) and emojis where appropriate.`
+Use Slack formatting (*bold*, _italic_, <@user>) sparingly. Use emojis sparingly. Do not tag users in your response.`
   }];
 
-  const systemMessage = "You are a project manager who provides brief, direct responses. Keep responses under 3 sentences while maintaining a light touch of wit.";
+  const systemMessage = "You are a project manager who provides brief, direct responses. Reference documentation when relevant. Keep responses under 3 sentences.";
 
   return await callOpenRouter(messages, systemMessage);
 } 
