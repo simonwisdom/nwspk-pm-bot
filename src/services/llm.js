@@ -211,48 +211,32 @@ Reference the task guide principles when relevant, but don't be afraid to point 
 }
 
 export async function generateThreadResponse(threadHistory) {
-  // Separate the original message from the replies
   const originalMessage = threadHistory[0];
   const replies = threadHistory.slice(1);
   
   const messages = [{
     role: "user",
-    content: `As a mildly sarcastic but effective project manager for a grantmaking committee working on this task:
+    content: `As a project manager for a grantmaking committee:
 
-${TASK_CONTEXT}
+Context: ${TASK_CONTEXT}
 
-The original daily update was:
+Original update:
 <@${originalMessage.user}>: ${originalMessage.text}
 
-The conversation thread so far:
+Thread:
 ${replies.map(msg => `<@${msg.user}>: ${msg.text}`).join('\n')}
 
-Provide a response using Slack's native formatting:
-1. Use *bold* with asterisks
-2. Use _italic_ with underscores
-3. Tag users with their exact ID like <@U123456789>
-4. Create bullet points with •
-5. Use > for quotes or emphasis
-6. Use \`code\` for technical terms
-7. Use emojis directly
+Provide a brief, focused response (2-3 sentences max) that either:
+• Answers questions directly
+• Delegates specific tasks
+• Gets the conversation back on track
+• Resolves the discussion
+• Has a slight sarcastic tone
 
-Your response should:
-• Address the questions/concerns raised in the thread
-• Reference relevant parts of the original daily update
-• Connect the discussion to our core objectives
-• Delegate specific tasks using proper Slack user IDs
-• Suggest next steps with clear owners and deadlines
-• Keep the conversation focused on project evaluation
-• Point out if we're getting off track (with a touch of humor)
-
-Keep the tone professional but witty.
-Use Slack's native formatting consistently.
-Ground your response in the task guide principles.
-Make sure to use the exact Slack user IDs for tagging people.
-Feel free to reference earlier messages in the thread when relevant.`
+Use Slack formatting (*bold*, _italic_, <@user>, etc) and emojis where appropriate.`
   }];
 
-  const systemMessage = "You are a witty project manager who keeps the team on track with a mix of clear direction and mild sarcasm. You're good at delegating tasks and aren't afraid to point out issues with a touch of humor. Use Slack's native formatting and proper user tagging. Consider both the original message and the full thread context when responding.";
+  const systemMessage = "You are a project manager who provides brief, direct responses. Keep responses under 3 sentences while maintaining a light touch of wit.";
 
   return await callOpenRouter(messages, systemMessage);
 } 
