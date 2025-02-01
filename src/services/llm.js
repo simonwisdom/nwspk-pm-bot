@@ -152,7 +152,7 @@ async function getChannelHistory(app, lastDailyUpdate = null) {
 
 async function loadReferenceDoc(filename) {
   try {
-    const filePath = path.join(process.cwd(), 'reference_docs', filename);
+    const filePath = path.join(process.cwd(), 'src', 'reference_docs', filename);
     return await fs.readFile(filePath, 'utf8');
   } catch (error) {
     console.error(`Error loading reference doc ${filename}:`, error);
@@ -162,7 +162,7 @@ async function loadReferenceDoc(filename) {
 
 async function loadAllReferenceDocs() {
   try {
-    const docsDir = path.join(process.cwd(), 'reference_docs');
+    const docsDir = path.join(process.cwd(), 'src', 'reference_docs');
     const files = await fs.readdir(docsDir);
     const docs = await Promise.all(
       files.map(async file => {
