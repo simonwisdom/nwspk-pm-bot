@@ -1,5 +1,8 @@
 # AI Grantmaking Slackbot
 
+![Bot Screenshot](bot.webp)
+
+
 A Slack bot that facilitates AI alignment grantmaking exercises using LLMs. Creates daily discussion threads and generates AI-powered insights to help participants practice grantmaking decisions.
 
 ## Features
