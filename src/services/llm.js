@@ -194,7 +194,7 @@ export async function generateDailyUpdate(app, lastDailyUpdate) {
   Use Slack formatting:
   *bold*, _italic_, <@U123456789> for user tags, • bullets, > quotes, \`code\`, and emojis
   
-  *### Daily Update* :coffee:
+  *Daily Update* :coffee:
   
   *Progress:*
   - Key discussions & decisions (with light sarcasm)
