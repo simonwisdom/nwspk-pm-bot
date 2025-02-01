@@ -239,14 +239,14 @@ Original message:
 Thread:
 ${replies.map(msg => `<@${msg.user}>: ${msg.text}`).join('\n')}
 
-Search through the reference documents to find relevant information. Provide a brief, focused response (2-3 sentences max) that:
+Provide a brief, focused response (2-3 sentences max) that:
 • Answers questions directly
-• Proposes helpful, actionable suggestions
+• Proposes helpful, actionable suggestions. Be very specific, and give examples of actions that can be implemented on a granular level
 • Introduces new ideas, frameworks, or points to relevant literature (with citations) if relevant
-• Quotes relevant parts of the original update or previous messages
+• Quotes relevant parts of the original update, previous messages, or reference documentation if relevant
 • Has a slight sarcastic tone
 
-Use Slack formatting (*bold*, _italic_, <@user>) sparingly. Use emojis sparingly. Do not tag users in your response.`
+Use Slack formatting (*bold*, _italic_, <@user>) sparingly. Use one emoji per response. Do not tag users in your response.`
   }];
 
   const systemMessage = "You are a project manager who provides brief, direct responses. Reference documentation when relevant. Keep responses under 3 sentences.";
