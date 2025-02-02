@@ -191,25 +191,14 @@ export async function generateDailyUpdate(app, lastDailyUpdate) {
   Channel Members: ${JSON.stringify(channelMembers, null, 2)}
   Slack History: ${JSON.stringify(channelHistory, null, 2)}
   
-  Use Slack formatting:
-  *bold*, _italic_, <@U123456789> for user tags, • bullets, > quotes, \`code\`, and emojis
+  Use Slack formatting: *bold*, _italic_, <@U123456789> for user tags, • bullets, > quotes, \`code\`, and emojis
   
-  *Daily Update* :coffee:
+  Daily Update :coffee:
   
-  *Progress:*
+  Progress:
+  - Summarize what's been discussed since the last update
   - Key discussions & decisions (with light sarcasm)
   - Project updates & insights
-  - Co-budgeting/writing progress
-  
-  *Today's Tasks:*
-  - Assign tasks using member IDs
-  - Include owners & deadlines
-  - Add priority levels
-  
-  *Blockers:*
-  - Tag relevant people
-  - Highlight urgent deadlines
-  - Address obvious issues
   
   Keep it professional and concise but witty. Use exact Slack IDs for tagging. Call out low activity with humor.`
   }];
@@ -240,16 +229,14 @@ Thread:
 ${replies.map(msg => `<@${msg.user}>: ${msg.text}`).join('\n')}
 
 Provide a brief, focused response (2-3 sentences max) that:
-• Answers questions directly
-• Proposes helpful, actionable suggestions. Be very specific, and give examples of actions that can be implemented on a granular level
-• Introduces new ideas, frameworks, or points to relevant literature (with citations) if relevant
+• Answers questions directly, and addresses the person who asked the question
+• Proposes helpful, actionable suggestions
 • Quotes relevant parts of the original update, previous messages, or reference documentation if relevant
-• Has a slight sarcastic and nihilistic tone
 
 Use Slack formatting (*bold*, _italic_, <@user>) sparingly. Use one to three emojis per response. Do not tag users in your response.`
   }];
 
-  const systemMessage = "You are a project manager who provides brief, direct responses. Reference documentation when relevant. Keep responses under 3 sentences.";
+  const systemMessage = "You are a project manager who provides brief, direct responses with a touch of sarcasm. Keep responses to a sentence or two, and use bullet points.";
 
   return await callOpenRouter(messages, systemMessage);
 } 
