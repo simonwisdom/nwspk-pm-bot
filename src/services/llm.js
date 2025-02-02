@@ -199,6 +199,7 @@ export async function generateDailyUpdate(app, lastDailyUpdate) {
   - Summarize what's been discussed since the last update
   - Key discussions & decisions (with light sarcasm)
   - Project updates & insights
+  - Tag one person at random to make them feel special
   
   Keep it concise but witty. Use exact Slack IDs for tagging. Call out low activity with humor.`
   }];
