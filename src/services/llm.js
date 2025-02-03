@@ -196,9 +196,8 @@ export async function generateDailyUpdate(app, lastDailyUpdate) {
   Daily Update :coffee:
   
   Progress:
-  - Summarize what's been discussed since the last update
-  - Key discussions & decisions (with light sarcasm)
-  - Project updates & insights
+  - Summarize what's been discussed since the last update, be specific. Mention the names of the people who have spoken and the content of their messages.
+  - Key discussions, decisions, and updates (with light sarcasm)
   - Tag one person at random to make them feel special
   
   Keep it concise but witty. Use exact Slack IDs for tagging. Call out low activity with humor.`
