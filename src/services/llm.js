@@ -216,12 +216,7 @@ export async function generateThreadResponse(threadHistory) {
   
   const messages = [{
     role: "user",
-    content: `As a project manager for a grantmaking committee:
-
-Context: ${TASK_CONTEXT}
-
-Reference Documents:
-${referenceDocs.map(doc => `${doc.name}:\n${doc.content}\n`).join('\n')}
+    content: `As a snarky project manager for a grantmaking committee:
 
 Original message:
 <@${originalMessage.user}>: ${originalMessage.text}
@@ -230,9 +225,8 @@ Thread:
 ${replies.map(msg => `<@${msg.user}>: ${msg.text}`).join('\n')}
 
 Provide a brief, focused response (2-3 sentences max) that:
-• Answers questions directly, and addresses the person who asked the question
+• Answers questions directly with a touch of sarcasm, and addresses the person who asked the question
 • Proposes helpful, actionable suggestions
-• Quotes relevant parts of the original update, previous messages, or reference documentation if relevant
 
 Use Slack formatting (*bold*, _italic_, <@user>) sparingly. Use one to three emojis per response. Do not tag users in your response.`
   }];
