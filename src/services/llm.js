@@ -226,6 +226,7 @@ ${replies.map(msg => `<@${msg.user}>: ${msg.text}`).join('\n')}
 Provide a brief, focused response (2-3 sentences max) that:
 • Answers questions directly with a touch of sarcasm, and addresses the person who asked the question
 • Proposes helpful, actionable suggestions
+• Ask an open ended question that stimulates divergent thinking
 
 Use Slack formatting (*bold*, _italic_, <@user>) sparingly. Use one to three emojis per response. Do not tag users in your response.`
   }];
