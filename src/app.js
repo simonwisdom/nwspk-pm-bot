@@ -57,68 +57,42 @@ const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
   socketMode: true,
   appToken: process.env.SLACK_APP_TOKEN,
-  customRoutes: [],
-  logLevel: process.env.LOG_LEVEL || 'info',
-  socketMode: {
-    connectRetryConfig: {
-      minTimeout: 1000,
-      maxTimeout: 30000,
-      retries: 10
-    }
-  }
 });
+logger.info('Slack app initialized');
 
-// Handle Socket Mode lifecycle events
-app.error(async (error) => {
-  logger.error('Slack app error:', {
-    error: error.message,
-    stack: error.stack,
-    code: error.code,
-    data: error.data
-  });
-});
+// Verify Slack token and scopes
+async function verifySlackConfig() {
+  try {
+    // Test auth to verify token and scopes
+    const auth = await app.client.auth.test();
+    logger.info('Slack authentication successful', { 
+      botId: auth.bot_id,
+      teamId: auth.team_id 
+    });
 
-// Handle disconnections explicitly
-let reconnectAttempts = 0;
-const MAX_RECONNECT_ATTEMPTS = 10;
-const RECONNECT_INTERVAL = 5000;
-
-async function handleDisconnect(error) {
-  logger.warn('Socket Mode disconnected:', {
-    error: error?.message,
-    reconnectAttempts,
-    maxAttempts: MAX_RECONNECT_ATTEMPTS
-  });
-
-  if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
-    reconnectAttempts++;
-    logger.info(`Attempting to reconnect (${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})...`);
+    logger.info('Required Slack scopes:', {
+      required: [
+        'app_mentions:read',
+        'channels:history',
+        'channels:read',
+        'chat:write',
+        'users:read',
+        'groups:history',
+        'im:history',
+        'mpim:history',
+        'connections:write'
+      ]
+    });
     
-    try {
-      await app.stop();
-      await new Promise(resolve => setTimeout(resolve, RECONNECT_INTERVAL));
-      await app.start();
-      reconnectAttempts = 0; // Reset counter on successful reconnection
-      logger.info('Successfully reconnected to Slack');
-    } catch (reconnectError) {
-      logger.error('Reconnection failed:', {
-        error: reconnectError.message,
-        attempt: reconnectAttempts
-      });
-      // Try again after interval
-      setTimeout(() => handleDisconnect(reconnectError), RECONNECT_INTERVAL);
-    }
-  } else {
-    logger.error('Max reconnection attempts reached. Manual intervention required.');
-    // Don't exit the process, let the health check endpoint stay available
-    appState.slack = false;
+    return true;
+  } catch (error) {
+    logger.error('Slack configuration error:', {
+      error: error.message,
+      hint: 'Please verify your Slack app has all required scopes and tokens are correct. Required scopes: app_mentions:read, channels:history, channels:read, chat:write, users:read, groups:history, im:history, mpim:history, connections:write'
+    });
+    return false;
   }
 }
-
-// Add disconnect handler
-app.client.on('disconnect', handleDisconnect);
-
-logger.info('Slack app initialized with reconnection handling');
 
 // Health check endpoint with detailed status
 expressApp.get('/health', (req, res) => {
@@ -324,34 +298,13 @@ async function runMigrations() {
     
     // Finally start the Slack app
     logger.info('Starting Slack app...');
-    try {
-      // Test auth to verify token and scopes
-      const auth = await app.client.auth.test();
-      logger.info('Slack authentication successful', { 
-        botId: auth.bot_id,
-        teamId: auth.team_id,
-        requiredScopes: [
-          'app_mentions:read',
-          'channels:history',
-          'channels:read',
-          'chat:write',
-          'users:read',
-          'groups:history',
-          'im:history',
-          'mpim:history',
-          'connections:write'
-        ]
-      });
-
+    const slackConfigValid = await verifySlackConfig();
+    if (slackConfigValid) {
       await app.start();
       appState.slack = true;
       logger.info('⚡️ Bolt app is running!');
-    } catch (slackError) {
-      logger.error('Slack initialization failed:', {
-        error: slackError.message,
-        stack: slackError.stack,
-        hint: 'Please verify Slack tokens and scopes. Required scopes: app_mentions:read, channels:history, channels:read, chat:write, users:read, groups:history, im:history, mpim:history, connections:write'
-      });
+    } else {
+      logger.warn('Slack app not started due to missing scopes - continuing with limited functionality');
       appState.slack = false;
     }
     
