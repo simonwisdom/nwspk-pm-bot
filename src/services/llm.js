@@ -71,7 +71,8 @@ async function callOpenRouter(messages, systemMessage = null) {
     },
     body: JSON.stringify({
       model: "meta-llama/llama-3.3-70b-instruct",
-      messages: requestMessages
+      messages: requestMessages,
+      temperature: 1.5
     })
   });
 
